@@ -1,0 +1,44 @@
+* {
+    border: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'Humanbumsuk';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/Humanbumsuk.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    font-size: 10px;
+    font-family: 'Humanbumsuk';
+}
+
+nav {
+    background-color: darkred;
+}
+
+.nav-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 1.5rem;
+}
+
+.nav-title {
+    color: white;
+    font-size: 3rem;
+}
+
+.nav-contact {
+    background: none;
+    color: white;
+    font-size: 2.5rem;
+    cursor: pointer;
+    /* 폰트를 강제 상속하는 속성 */
+    /* 버튼같은 경우에는 버튼이 가지고 있는 폰트가 이미 적용이 되어 있음. 이럴 때는 상속이 적용되어 있지 않음 */
+    font-family: inherit;
+}

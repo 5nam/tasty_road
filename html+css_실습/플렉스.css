@@ -1,0 +1,39 @@
+/* 컨테이너 라는 부모 태그에 display:flex; 라고 주면 되는 것 */
+/* 그리고 그 자식들은 플렉스 아이템이 되는 것! */
+/* 메인축, 주축같은 경우에는 flex-direction 의 속성으로 결정되는 것. */
+/* 여기서 주축이란 flex-direction 으로 지정돼 있는 방향을 말하는 것 */
+/* 만약, flex-direction 을 column 으로 두면 주축은 열방향이 되는 것 */
+/* 플렉스 박스는 이 주축의 방향에 따라 아이템들을 정렬함 */
+
+
+/* space-between */
+/* 3개가 있다고 치면, 왼쪽 것은 맨 왼쪽에, 오른쪽 것은 맨 왼쪽에, 중앙은 딱 그 사이 중간에 */
+
+/* space-evenly */
+/* 3개가 있다고 치면, 아이템들 사이, 양 끝에 균일한 간격을 만들어주는 것 */
+
+/* space-around */
+/* 아이템 사이의 간격은 동일한데, flex-start 와 첫 번째 요소의 사이, flex-end 와 마지막 요소의 사이는 적당히 떨어뜨려 놓겠다는 것 */
+
+/* 그래서 강사님은 space-between 을 즐겨 쓰고, 마진이나 패딩을 줘서 내가 원하는 만큼 띄우는 식으로 */
+
+.container {
+    width: 350px;
+    height: 500px;
+    background-color: gray;
+    display: flex;
+    /* flex-direction 은 기본값으로 row */
+    flex-direction: row;
+    /* justify-content 기본값 : flex-start */
+    justify-content: center;
+    align-items: center;
+}
+
+.item {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    border: 1px solid black;
+}
+
+/* 이번 시간에 살펴본 것은 flex 컨테이너에 적용할 수 있는 속성들을 살펴본 것 */

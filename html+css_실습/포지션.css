@@ -1,0 +1,43 @@
+div {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    border: 1px solid black;
+}
+
+/* 
+가장 자주 쓰는 포지션 속성 : relative, absolute
+*/
+/* relative 는 상대적이라는 의미인데, 원래 static 했을 때, 원래 있어야 하는 자리에서 상대적인 이동을 한다는 것 */
+/* absolute 는 자신의 가장 가까운 부모 중의 포지션 속성이 relative를 찾아서 걔에 대해 상대적 이동을 한다. 만약, 가까운 부모중에 relative 속성을 가진 것이 없으면, body 태그를 기준으로 한다.*/
+
+/* 그 외에 포지션 속성 */
+/* fixed : 화면 자체를 기준으로 이동함. 그래서 대표적인 예시가 뭐냐면, fixed 로 하고 bottom 값을 0으로 주면 항상 바닥에 고정되어서 위치하게 되는 것.(배너, 바같은 것들) */
+/* sticky : 스크롤에 맞추어서 같이 이동하게 하는 것. */
+/* fixed 와 sticky 의 차이? */
+/* fixed 는 요소가 일반적인 문서 흐름에서 완전히 제외된다. 주어진 위치에 고정된다. 화면의 특정 위치에 고정되어 스크롤해도 계속 그 자리에 있다. */
+/* sticky 는 일반적인 문서 흐름에 따라 배치된다. 그러나 스크롤이 되는 가장 가까운 상위 요소의 대해 오프셋이 적용된다. */
+/* 즉, fixed 는 viewport 에 고정되어 있는 것이고 스크롤을 내려도 원하는 위치에 고정되어있다. */
+/* 그에 반해 sticky 는 스크롤을 따라 움직이다가 내가 정한 offset 에 닿으면 그 순간부터 fixed 처럼 고정이 된다. 최초에 relative 속성처럼 동작하다가 스크롤이 특정 지점에 도달하면 fiexd 속성으로 동작하는 것이다. */
+/* 출처 : https://velog.io/@moripark32/%EB%82%B4%EA%B0%80-%EB%AA%B0%EB%9E%90%EB%8D%98-HTMLCSS-part-5.-postionfixed-%EC%99%80-sticky%EC%9D%98-%EC%B0%A8%EC%9D%B4 */
+#target {
+    background-color: yellow;
+    position: sticky;
+    top: 20px;
+}
+
+.container {
+    width: 400px;
+    height: 400px;
+    position: relative;
+}
+
+/* target2 : absolute 동작 원리 */
+/* absolute 포지션을 지정하는 순간 자신의 부모 태그 중에 포지션 속성이 relative 인 것을 찾습니다. */
+/* 그래서 target2 의 부모인 container 의 포지션 속성을 확인함. 그 결과 없으면 바디를 기준으로 자신의 위치를 결정지음 */
+#target2 {
+    background-color: red;
+    position: absolute;
+    left: 30px;
+    top: 30px ;
+}

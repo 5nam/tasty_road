@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./사이즈.css">
+</head>
+<body>
+    <h1>px</h1>
+
+    <p>px사이즈 조절중입니다.</p>
+
+    <!-- em 은 부모의 크기를 기준으로 하기 때문에 중첩 시에 계산이 어려움 -->
+    <h1>em</h1>
+
+    <ul class="ems">
+        <li>One</li>
+        <li>Two</li>
+        <li>
+            Three
+            <ul>
+                <li>Three A</li>
+                <li>
+                    Three B
+                    <ul>
+                        <li>Three B 2</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <!-- 아래 두개가 가장 많이 사용 -->
+    <!-- rem : 글자 사이즈 조절, percent : 요소에 너비/높이 조절 -->
+
+    <h1>rem</h1> 
+
+    <div class="rems">rem 단위 테스트입니다.</div>
+
+    <h1>percent</h1>
+</body>
+</html>

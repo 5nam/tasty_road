@@ -1,0 +1,100 @@
+@font-face {
+    font-family: "KyoboHandwriting2020A";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@1.0/KyoboHandwriting2020A.woff")
+      format("woff");
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 10px;
+    font-family: "KyoboHandwriting2020A";
+  }
+  
+  /* nav { */
+    /* background-color: #e69a06; */
+  /* } */
+  
+  .nav-container {
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-title {
+    font-size: 3rem;
+  }
+  
+  .nav-contact {
+    font-size: 2.6rem;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .category-title {
+    font-size: 3.5rem;
+  }
+
+  .category-item {
+    width: 24.6%;
+    height: 5rem;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 1.6rem;
+  }
+
+  .category-item:hover {
+    color: darkred;
+    cursor: pointer;
+  }
+
+  .inner {
+    padding: 0 1.5rem;
+  }
+  
+  @media all and (min-width: 1024px) {
+    .inner {
+      max-width: 1024px;
+      margin: 0 auto;
+    }
+  }
+
+  /* 카카오맵 CSS */
+
+  /* 여기서 화면의 전체로 지도의 높이를 지정하고 싶어서 100%를 쓰면 아예 지도가 사라질 것 */
+  /* 왜냐하면 전체는 바디태그에 해당하는데 바디태그는 높이가 지정된 것이 아닌 그냥 컨텐츠들이 그 사이에 들어가 있는 것이기 때문 */
+  /* 그래서 body 태그의 높이를 100vh : 여기서 vh 는 viewport height 라고 해서 보이는 화면의 비율을 의미함 */
+
+  body {
+    height: 100vh;
+  }
+
+  nav {
+    height: 59px;
+  }
+
+  main {
+    padding-top: 1.5rem;
+    height: calc(100% - 59px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  #map {
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* padding 은 그 크기에 포함되고, margin 은 그 크기에 포함되지 않음 */

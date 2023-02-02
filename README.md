@@ -24,3 +24,5 @@ function makeClickListener(map, marker, infowindow) {
     };
 }
 ~~~
+
+코드 출처 : https://www.inflearn.com/course/%EB%B9%84%EC%A0%84%EA%B3%B5-%ED%92%80%EC%8A%A4%ED%83%9D-%EB%A7%9B%EC%A7%91%EC%A7%80%EB%8F%84#

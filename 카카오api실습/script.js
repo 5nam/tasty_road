@@ -15,75 +15,93 @@ var zoomControl = new kakao.maps.ZoomControl();
 map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
 // 2. 더미데이터 생성 : 제목, 주소, url, 카테고리
+// import loadData from "./tasty.js";
+// console.log(loadData);
 
-// 3. 여러 개 마커 찍기
-// 마커를 표시할 위치와 title 객체 배열입니다 
+// 3. 여러 개 마커 찍기 & 주소-좌표 변환
+// 마커를 표시할 위치와 title 객체 배열입니다
+
+// 주소-좌표 변환 객체를 생성합니다
+var geocoder = new kakao.maps.services.Geocoder();
+
 var positions = [
     {
-        title: '카카오', 
-        latlng: new kakao.maps.LatLng(33.450705, 126.570677),
+        title: '한입소반', 
+        address: '서울 용산구 청파로45길 3 1층',
         img: 'https://mblogthumb-phinf.pstatic.net/MjAyMTAyMTJfMjYz/MDAxNjEzMDU5MzA0MDMz.tcm2gURGnE_9ZNUNBjlqqvfue8PR82B4eYII8cAdBlUg.R-IVtLehCxgT6m4eFnwhvbj4R7RJlsf2ilb8EpffSvMg.JPEG.chooddingg/IMG_9384.JPG?type=w800',
         link: 'https://www.youtube.com/'
     },
     {
-        title: '생태연못', 
-        latlng: new kakao.maps.LatLng(33.450936, 126.569477),
+        title: '와플하우스', 
+        address: '서울 용산구 청파로45길 37',
         img: 'http://ojsfile.ohmynews.com/STD_IMG_FILE/2011/1204/IE001377080_STD.jpg',
         link: 'https://www.youtube.com/'
     },
     {
-        title: '텃밭', 
-        latlng: new kakao.maps.LatLng(33.450879, 126.569940),
+        title: '홍곱창', 
+        address: '서울 용산구 청파로43가길 31 1층',
         img: 'https://mblogthumb-phinf.pstatic.net/MjAyMTAyMTJfMjYz/MDAxNjEzMDU5MzA0MDMz.tcm2gURGnE_9ZNUNBjlqqvfue8PR82B4eYII8cAdBlUg.R-IVtLehCxgT6m4eFnwhvbj4R7RJlsf2ilb8EpffSvMg.JPEG.chooddingg/IMG_9384.JPG?type=w800',
         link: 'https://www.youtube.com/'
     },
     {
-        title: '근린공원',
-        latlng: new kakao.maps.LatLng(33.451393, 126.570738),
+        title: '까치네',
+        address: '서울 용산구 청파로45길 18',
         img: 'https://mblogthumb-phinf.pstatic.net/MjAyMTAyMTJfMjYz/MDAxNjEzMDU5MzA0MDMz.tcm2gURGnE_9ZNUNBjlqqvfue8PR82B4eYII8cAdBlUg.R-IVtLehCxgT6m4eFnwhvbj4R7RJlsf2ilb8EpffSvMg.JPEG.chooddingg/IMG_9384.JPG?type=w800',
         link: 'https://www.youtube.com/'
     }
 ];
 
+for(let i = 0; i < positions.length; i++) {
+    // 주소로 좌표를 검색합니다.
+    geocoder.addressSearch(positions[i].address, function(result, status) {
+        // 정상적으로 검색이 완료됐으면
+        if(status === kakao.maps.services.Status.OK) {
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+            // // 마커 이미지의 이미지 크기 입니다
+            // var imageSize = new kakao.maps.Size(24, 35); 
+    
+            // 마커를 생성합니다
+            var marker = new kakao.maps.Marker({
+                map: map, // 마커를 표시할 지도
+                position: coords, // 마커를 표시할 위치
+                title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                clickStatus : false
+            }); 
+            // 결과값으로 받은 위치를 마커로 표시합니다
+            map.setCenter(coords);
+
+
+            // // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+            // 마커에 표시할 인포 윈도우 재료들
+            var infoContent = 
+            '<img src="'
+            + positions[i].img
+            + '" alt="지원하지 않습니다.">'
+            + '<div style="padding:5px;">' 
+            + positions[i].title
+            + '<br>'
+            + positions[i].address
+            + '<br><a href="'
+            + positions[i].link
+            + '" style="color:blue" target="_blank">영상보기</a>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
+            // 마커에 표시할 인포윈도우를 생성합니다 
+            var infowindow = new kakao.maps.InfoWindow({
+                content: infoContent
+            });
+
+            // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+            // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+            // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+            kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow));
+        }
+    });
+}
+
 // 마커 이미지의 이미지 주소입니다
 // var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-    
-for (var i = 0; i < positions.length; i ++) {
-    
-    // 마커 이미지의 이미지 크기 입니다
-    var imageSize = new kakao.maps.Size(24, 35); 
-    
-    // 마커를 생성합니다
-    var marker = new kakao.maps.Marker({
-        map: map, // 마커를 표시할 지도
-        position: positions[i].latlng, // 마커를 표시할 위치
-        title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-        clickStatus : false
-    });
 
-    // 마커에 표시할 인포 윈도우 재료들
-    var infoContent = 
-    '<img src="'
-    + positions[i].img
-    + '" alt="지원하지 않습니다.">'
-    + '<div style="padding:5px;">' 
-    + positions[i].title
-    + '<br>'
-    + positions[i].latlng
-    + '<br><a href="'
-    + positions[i].link
-    + '" style="color:blue" target="_blank">영상보기</a>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-
-    // 마커에 표시할 인포윈도우를 생성합니다 
-    var infowindow = new kakao.maps.InfoWindow({
-        content: infoContent
-    });
-
-    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
-    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-    kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow));
-}
 
 // 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
 function makeClickListener(map, marker, infowindow) {
@@ -97,6 +115,5 @@ function makeClickListener(map, marker, infowindow) {
         }
     };
 }
-
 
 

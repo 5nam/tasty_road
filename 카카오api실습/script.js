@@ -68,8 +68,13 @@ for(let i = 0; i < positions.length; i++) {
                 title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
                 clickStatus : false
             }); 
-            // 결과값으로 받은 위치를 마커로 표시합니다
-            map.setCenter(coords);
+            // 마커가 보이는 곳으로 이동할 수 있도록
+            // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+ 
+            var bounds = new kakao.maps.LatLngBounds(); 
+            bounds.extend(coords);
+            // map.setCenter(coords);
+            map.setBounds(bounds);
 
 
             // // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다

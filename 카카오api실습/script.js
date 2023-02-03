@@ -68,14 +68,12 @@ for(let i = 0; i < positions.length; i++) {
                 title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
                 clickStatus : false
             }); 
+
             // 마커가 보이는 곳으로 이동할 수 있도록
             // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
- 
             var bounds = new kakao.maps.LatLngBounds(); 
             bounds.extend(coords);
-            // map.setCenter(coords);
             map.setBounds(bounds);
-
 
             // // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
             // 마커에 표시할 인포 윈도우 재료들
@@ -99,19 +97,25 @@ for(let i = 0; i < positions.length; i++) {
             // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
             // 이벤트 리스너로는 클로저를 만들어 등록합니다 
             // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+            // kakao.maps.event.addListener(marker, 'click', makePanTo(map, marker));
             kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow));
+        } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+            alert('검색 결과가 존재하지 않습니다.');
+            return;
+        } else if (status === kakao.maps.services.Status.ERROR) {
+            alert('검색 결과 중 오류가 발생했습니다.');
+            return;
         }
     });
 }
-
-// 마커 이미지의 이미지 주소입니다
-// var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 
 
 // 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
 function makeClickListener(map, marker, infowindow) {
     return function() {
         if(!marker.clickStatus) {
+            // 지도 중심좌표를 접속위치로 변경합니다
+            makePanTo(map, maker);
             infowindow.open(map, marker);
             marker.clickStatus = true;
         } else if(marker.clickStatus) {
@@ -121,4 +125,11 @@ function makeClickListener(map, marker, infowindow) {
     };
 }
 
-
+function makePanTo(map, marker) {
+    // 이동할 위도 경도 위치를 생성합니다 
+    var moveLatLon = marker.coords;
+    
+    // 지도 중심을 부드럽게 이동시킵니다
+    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+    map.panTo(moveLatLon);            
+}

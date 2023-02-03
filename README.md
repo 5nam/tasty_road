@@ -31,6 +31,8 @@
     출처 : https://poiemaweb.com/js-scope 
     ~~~
     : 오류 해결 출처 (https://devtalk.kakao.com/t/uncaught-typeerror-cannot-read-property-title-of-undefined/110077)
+3. 마커 클릭하면, 지도의 센터가 마커로 움직이는 기능 구형하려 했으나 아래 오류로 인해 실패
+: Uncaught ReferenceError: maker is not defined
 
 ## 카카오맵 API 에 내가 추가한 코드
 - 클릭으로 열고 닫는 기능을 추가하고 싶었다.

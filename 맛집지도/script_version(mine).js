@@ -51,60 +51,72 @@ var positions = [
     }
 ];
 
-for(let i = 0; i < positions.length; i++) {
-    // 주소로 좌표를 검색합니다.
-    geocoder.addressSearch(positions[i].address, function(result, status) {
-        // 정상적으로 검색이 완료됐으면
-        if(status === kakao.maps.services.Status.OK) {
-            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+const mapPromise = new Promise((resolve, reject) => {
+    let isSuccess = true;
+
+    if(!isSuccess) {
+        reject(false);
+        return;
+    }
+
+    resolve();
+})
+
+mapPromise
+    .then((res) => {
+        makeMarker(positions);
+    })
+    .then((res) => {
+        // 마커가 보이는 곳으로 이동할 수 있도록
+        // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+                
+        var bounds = new kakao.maps.LatLngBounds(); 
+        bounds.extend(coords);
+        map.setBounds(bounds);
+    })
+
+// for(let i = 0; i < positions.length; i++) {
+//     let coords = changeCoords(positions[i].address);
     
-            // 마커를 생성합니다
-            var marker = new kakao.maps.Marker({
-                map: map, // 마커를 표시할 지도
-                position: coords, // 마커를 표시할 위치
-                title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                clickStatus : false
-            }); 
+//     // 마커를 생성합니다
+//     var marker = new kakao.maps.Marker({
+//         map: map, // 마커를 표시할 지도
+//         position: coords, // 마커를 표시할 위치
+//         title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+//         clickStatus : false
+//     }); 
 
-            // 마커가 보이는 곳으로 이동할 수 있도록
-            // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
-            var bounds = new kakao.maps.LatLngBounds(); 
-            bounds.extend(coords);
-            map.setBounds(bounds);
+//     // 마커가 보이는 곳으로 이동할 수 있도록
+//     // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+            
+//     var bounds = new kakao.maps.LatLngBounds(); 
+//     bounds.extend(coords);
+//     map.setBounds(bounds);
 
-            // 마커에 표시할 인포 윈도우 재료들
-            var infoContent = 
-            '<img src="'
-            + makeThumbnail(positions[i].link)
-            + '" alt="지원하지 않습니다.">'
-            + '<div style="padding:5px;">' 
-            + positions[i].title
-            + '<br>'
-            + positions[i].address
-            + '<br><a href="'
-            + positions[i].link
-            + '" style="color:blue" target="_blank">영상보기</a>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+//     // 마커에 표시할 인포 윈도우 재료들
+//     var infoContent = 
+//     '<img src="'
+//     + makeThumbnail(positions[i].link)
+//     + '" alt="지원하지 않습니다.">'
+//     + '<div style="padding:5px;">' 
+//     + positions[i].title
+//     + '<br>'
+//     + positions[i].address
+//     + '<br><a href="'
+//     + positions[i].link
+//     + '" style="color:blue" target="_blank">영상보기</a>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
 
-            // 마커에 표시할 인포윈도우를 생성합니다 
-            var infowindow = new kakao.maps.InfoWindow({
-                content: infoContent
-            });
+//     // 마커에 표시할 인포윈도우를 생성합니다 
+//     var infowindow = new kakao.maps.InfoWindow({
+//         content: infoContent
+//     });
 
-			// 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-			// 이벤트 리스너로는 클로저를 만들어 등록합니다 
-			// for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-			// kakao.maps.event.addListener(marker, 'click', makePanTo(map, marker)); // 오류나서 보류
-			kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow));
-
-        } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-            alert('검색 결과가 존재하지 않습니다.');
-            return;
-        } else if (status === kakao.maps.services.Status.ERROR) {
-            alert('검색 결과 중 오류가 발생했습니다.');
-            return;
-        }
-    });
-}
+// 	// 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+// 	// 이벤트 리스너로는 클로저를 만들어 등록합니다 
+// 	// for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+// 	// kakao.maps.event.addListener(marker, 'click', makePanTo(map, marker)); // 오류나서 보류
+// 	kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow));
+// }
 
 
 
@@ -161,6 +173,47 @@ function changeCoords(address) {
 			console.log("못 찾았습니다.");
 		}
 	})
+}
+
+// 마커 생성 함수
+function makeMarker(positions) {
+    for(let i = 0; i < positions.length; i++) {
+        let coords = changeCoords(positions[i].address);
+        
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+            map: map, // 마커를 표시할 지도
+            position: coords, // 마커를 표시할 위치
+            title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+            clickStatus : false
+        }); 
+    
+        
+    
+        // 마커에 표시할 인포 윈도우 재료들
+        var infoContent = 
+        '<img src="'
+        + makeThumbnail(positions[i].link)
+        + '" alt="지원하지 않습니다.">'
+        + '<div style="padding:5px;">' 
+        + positions[i].title
+        + '<br>'
+        + positions[i].address
+        + '<br><a href="'
+        + positions[i].link
+        + '" style="color:blue" target="_blank">영상보기</a>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+    
+        // 마커에 표시할 인포윈도우를 생성합니다 
+        var infowindow = new kakao.maps.InfoWindow({
+            content: infoContent
+        });
+    
+        // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+        // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+        // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+        // kakao.maps.event.addListener(marker, 'click', makePanTo(map, marker)); // 오류나서 보류
+        kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow));
+    }
 }
 
 // 오류나서 주석처리

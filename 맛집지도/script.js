@@ -29,25 +29,25 @@ var positions = [
         title: '한입소반', 
         address: '서울 용산구 청파로45길 3 1층',
         link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs',
-		keyword: '한식'
+		keyword: 'korean'
     },
     {
         title: '와플하우스', 
         address: '서울 용산구 청파로45길 37',
         link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs',
-		keyword: '기타'
+		keyword: 'etc'
     },
     {
         title: '홍곱창', 
         address: '서울 용산구 청파로43가길 31 1층',
         link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs',
-		keyword: '구이'
+		keyword: 'roast'
     },
     {
         title: '까치네',
         address: '서울 용산구 청파로45길 18',
         link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs',
-		keyword: '분식'
+		keyword: 'snackBar'
     }
 ];
 
@@ -71,8 +71,6 @@ for(let i = 0; i < positions.length; i++) {
             var bounds = new kakao.maps.LatLngBounds(); 
             bounds.extend(coords);
             map.setBounds(bounds);
-
-			makeThumbnail(positions[i].link);
 
             // 마커에 표시할 인포 윈도우 재료들
             var infoContent = 
@@ -137,16 +135,9 @@ function makeThumbnail(link) {
 function moveKeyword(positions, resultID) {
 	for(let positionsIndex = 0; positionsIndex<positions.length; positionsIndex++) {
 		if(positions[positionsIndex].keyword == resultID) {
-			geocoder.addressSearch(positions[positionsIndex].address, function(result, status) {
-				if (status === kakao.maps.services.Status.OK) {
-					var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+			let moveCoords = changeCoords(positions[positionsIndex].address);
 
-					console.log(coords);
-				}
-				else {
-					console.log("못 찾았습니다.");
-				}
-			})
+			map.setCenter(moveCoords);
 		}
 	}
 }
@@ -155,7 +146,21 @@ function moveKeyword(positions, resultID) {
 function returnButtonId(button) {
 	var resultID = document.getElementById(button.getAttribute('id')).getAttribute('id');
 
-	console.log(resultID);
+	moveKeyword(positions, resultID);
+}
+
+// 주소-좌표 변환 함수
+function changeCoords(address) {
+	geocoder.addressSearch(address, function(result, status) {
+		if (status === kakao.maps.services.Status.OK) {
+			let coordsResult = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+			return coordsResult;
+		}
+		else {
+			console.log("못 찾았습니다.");
+		}
+	})
 }
 
 // 오류나서 주석처리

@@ -28,27 +28,26 @@ var positions = [
     {
         title: '한입소반', 
         address: '서울 용산구 청파로45길 3 1층',
-        // img: 'https://img.youtube.com/vi/P3N8gkG-xIs/mqdefault.jpg',
-		// img: makeThumbnail(link),
-        link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs'
+        link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs',
+		keyword: '한식'
     },
     {
         title: '와플하우스', 
         address: '서울 용산구 청파로45길 37',
-        // img: 'https://img.youtube.com/vi/P3N8gkG-xIs/mqdefault.jpg',
-        link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs'
+        link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs',
+		keyword: '기타'
     },
     {
         title: '홍곱창', 
         address: '서울 용산구 청파로43가길 31 1층',
-        // img: 'https://img.youtube.com/vi/P3N8gkG-xIs/mqdefault.jpg',
-        link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs'
+        link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs',
+		keyword: '구이'
     },
     {
         title: '까치네',
         address: '서울 용산구 청파로45길 18',
-        // img: 'https://img.youtube.com/vi/P3N8gkG-xIs/mqdefault.jpg',
-        link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs'
+        link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs',
+		keyword: '분식'
     }
 ];
 
@@ -132,6 +131,31 @@ function makeThumbnail(link) {
 	let thumbnailLink = 'https://img.youtube.com/vi/' + link.substr(findIndex) + '/mqdefault.jpg';
 
 	return thumbnailLink;
+}
+
+// 분야를 클릭하면 움직이는 함수
+function moveKeyword(positions, resultID) {
+	for(let positionsIndex = 0; positionsIndex<positions.length; positionsIndex++) {
+		if(positions[positionsIndex].keyword == resultID) {
+			geocoder.addressSearch(positions[positionsIndex].address, function(result, status) {
+				if (status === kakao.maps.services.Status.OK) {
+					var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+					console.log(coords);
+				}
+				else {
+					console.log("못 찾았습니다.");
+				}
+			})
+		}
+	}
+}
+
+// 버튼 클릭 시 버튼의 id 반환하는 함수
+function returnButtonId(button) {
+	var resultID = document.getElementById(button.getAttribute('id')).getAttribute('id');
+
+	console.log(resultID);
 }
 
 // 오류나서 주석처리

@@ -59,6 +59,11 @@
 -> 아무리 찾아도 모르겠음... 흑... 오류가 난 곳이 kakao.js 라고 하는데,, 아무리 검색해도 저 reading 'e' 가 뭔지 모르겠음..
 : 몇 초 있다가 이 오류도 남(Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received)
 
+4. Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received
+: 위 오류는 다른 오류 사항 없어도 계속 생김.
+: Uncatch (in promise) 오류: 수신기가 true를 반환하여 비동기 응답을 나타냈지만 응답을 받기 전에 메시지 채널이 닫혔습니다.
+: 비동기처리를 해야하는 건가..?
+-> (특별히 프로그램이 안돌아가는 것이 아니니) 일단 보류.. 
 
 ## 카카오맵 API 에 내가 추가한 코드
 - 클릭으로 열고 닫는 기능을 추가하고 싶었다.

@@ -58,7 +58,7 @@ for(let i = 0; i < positions.length; i++) {
         if(status === kakao.maps.services.Status.OK) {
             var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-            // // 마커 이미지의 이미지 크기 입니다
+            // // 마커 이미지의 이미지 크기 입니다s
             // var imageSize = new kakao.maps.Size(24, 35); 
     
             // 마커를 생성합니다
@@ -115,7 +115,7 @@ function makeClickListener(map, marker, infowindow) {
     return function() {
         if(!marker.clickStatus) {
             // 지도 중심좌표를 접속위치로 변경합니다
-            // makePanTo(map, maker);
+            makePanTo(map, marker);
             infowindow.open(map, marker);
             marker.clickStatus = true;
         } else if(marker.clickStatus) {

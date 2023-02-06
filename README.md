@@ -54,7 +54,9 @@
 
     
 3. 마커 클릭하면, 지도의 센터가 마커로 움직이는 기능 구형하려 했으나 아래 오류로 인해 실패
-: Uncaught ReferenceError: maker is not defined
+: Uncaught ReferenceError: maker is not defined -> 오타 문제였음 ㅎㅎ.. 해결..
+: Uncaught TypeError: Cannot read properties of undefined (reading 'e')
+-> 아무리 찾아도 모르겠음... 흑... 오류가 난 곳이 kakao.js 라고 하는데,, 아무리 검색해도 저 reading 'e' 가 뭔지 모르겠음..
 : 몇 초 있다가 이 오류도 남(Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received)
 
 

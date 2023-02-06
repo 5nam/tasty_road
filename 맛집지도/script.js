@@ -28,26 +28,27 @@ var positions = [
     {
         title: '한입소반', 
         address: '서울 용산구 청파로45길 3 1층',
-        img: 'https://mblogthumb-phinf.pstatic.net/MjAyMTAyMTJfMjYz/MDAxNjEzMDU5MzA0MDMz.tcm2gURGnE_9ZNUNBjlqqvfue8PR82B4eYII8cAdBlUg.R-IVtLehCxgT6m4eFnwhvbj4R7RJlsf2ilb8EpffSvMg.JPEG.chooddingg/IMG_9384.JPG?type=w800',
-        link: 'https://www.youtube.com/'
+        // img: 'https://img.youtube.com/vi/P3N8gkG-xIs/mqdefault.jpg',
+		// img: makeThumbnail(link),
+        link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs'
     },
     {
         title: '와플하우스', 
         address: '서울 용산구 청파로45길 37',
-        img: 'http://ojsfile.ohmynews.com/STD_IMG_FILE/2011/1204/IE001377080_STD.jpg',
-        link: 'https://www.youtube.com/'
+        // img: 'https://img.youtube.com/vi/P3N8gkG-xIs/mqdefault.jpg',
+        link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs'
     },
     {
         title: '홍곱창', 
         address: '서울 용산구 청파로43가길 31 1층',
-        img: 'https://mblogthumb-phinf.pstatic.net/MjAyMTAyMTJfMjYz/MDAxNjEzMDU5MzA0MDMz.tcm2gURGnE_9ZNUNBjlqqvfue8PR82B4eYII8cAdBlUg.R-IVtLehCxgT6m4eFnwhvbj4R7RJlsf2ilb8EpffSvMg.JPEG.chooddingg/IMG_9384.JPG?type=w800',
-        link: 'https://www.youtube.com/'
+        // img: 'https://img.youtube.com/vi/P3N8gkG-xIs/mqdefault.jpg',
+        link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs'
     },
     {
         title: '까치네',
         address: '서울 용산구 청파로45길 18',
-        img: 'https://mblogthumb-phinf.pstatic.net/MjAyMTAyMTJfMjYz/MDAxNjEzMDU5MzA0MDMz.tcm2gURGnE_9ZNUNBjlqqvfue8PR82B4eYII8cAdBlUg.R-IVtLehCxgT6m4eFnwhvbj4R7RJlsf2ilb8EpffSvMg.JPEG.chooddingg/IMG_9384.JPG?type=w800',
-        link: 'https://www.youtube.com/'
+        // img: 'https://img.youtube.com/vi/P3N8gkG-xIs/mqdefault.jpg',
+        link: 'https://www.youtube.com/watch?v=P3N8gkG-xIs'
     }
 ];
 
@@ -72,11 +73,12 @@ for(let i = 0; i < positions.length; i++) {
             bounds.extend(coords);
             map.setBounds(bounds);
 
-            // // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+			makeThumbnail(positions[i].link);
+
             // 마커에 표시할 인포 윈도우 재료들
             var infoContent = 
             '<img src="'
-            + positions[i].img
+            + makeThumbnail(positions[i].link)
             + '" alt="지원하지 않습니다.">'
             + '<div style="padding:5px;">' 
             + positions[i].title
@@ -121,6 +123,15 @@ function makeClickListener(map, marker, infowindow) {
             marker.clickStatus = false;
         }
     };
+}
+
+// 일반 링크에서 썸네일 링크 따오는 함수
+function makeThumbnail(link) {
+	var findIndex = link.lastIndexOf('v=') + 2;
+
+	let thumbnailLink = 'https://img.youtube.com/vi/' + link.substr(findIndex) + '/mqdefault.jpg';
+
+	return thumbnailLink;
 }
 
 // 오류나서 주석처리

@@ -57,9 +57,6 @@ for(let i = 0; i < positions.length; i++) {
         // 정상적으로 검색이 완료됐으면
         if(status === kakao.maps.services.Status.OK) {
             var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-            // // 마커 이미지의 이미지 크기 입니다s
-            // var imageSize = new kakao.maps.Size(24, 35); 
     
             // 마커를 생성합니다
             var marker = new kakao.maps.Marker({
@@ -94,11 +91,12 @@ for(let i = 0; i < positions.length; i++) {
                 content: infoContent
             });
 
-            // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-            // 이벤트 리스너로는 클로저를 만들어 등록합니다 
-            // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-            // kakao.maps.event.addListener(marker, 'click', makePanTo(map, marker));
-            kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow));
+			// 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+			// 이벤트 리스너로는 클로저를 만들어 등록합니다 
+			// for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+			// kakao.maps.event.addListener(marker, 'click', makePanTo(map, marker)); // 오류나서 보류
+			kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow));
+
         } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
             alert('검색 결과가 존재하지 않습니다.');
             return;
@@ -110,12 +108,12 @@ for(let i = 0; i < positions.length; i++) {
 }
 
 
+
+
 // 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
 function makeClickListener(map, marker, infowindow) {
     return function() {
         if(!marker.clickStatus) {
-            // 지도 중심좌표를 접속위치로 변경합니다
-            makePanTo(map, marker);
             infowindow.open(map, marker);
             marker.clickStatus = true;
         } else if(marker.clickStatus) {
@@ -125,11 +123,17 @@ function makeClickListener(map, marker, infowindow) {
     };
 }
 
+// 오류나서 주석처리
+/*
 function makePanTo(map, marker) {
-    // 이동할 위도 경도 위치를 생성합니다 
-    var moveLatLon = marker.coords;
-    
-    // 지도 중심을 부드럽게 이동시킵니다
-    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-    map.panTo(moveLatLon);            
+
+	return function() {
+		// 이동할 위도 경도 위치를 생성합니다 
+		var moveLatLon = marker.position;
+		
+		// 지도 중심을 부드럽게 이동시킵니다
+		// 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+		map.panTo(moveLatLon);    
+	};        
 }
+*/

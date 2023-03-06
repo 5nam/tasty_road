@@ -6,7 +6,14 @@ module.exports = function (app) {
   // 어떤 요청이 들어오면 그것에 맞게 응답을 해주는 부분임.
 
   // app.HTTP메서드(uri, 컨트롤러 콜백함수)
-  app.get("/dummy", index.example);
+  // app.get("/dummy", index.example);
+
+  // 학생 테이블 조회 : 
+  app.get("/students", index.readStudents);
+
+  // 학생 테이블 조회 : 패스베리어블
+  // app.get("/students/:studentIdx", index.readStudents);
+  
 
   // 예시
   /*

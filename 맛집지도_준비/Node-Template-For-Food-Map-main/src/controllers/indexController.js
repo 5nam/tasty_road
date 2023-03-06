@@ -5,6 +5,41 @@ const secret = require("../../config/secret");
 
 const indexDao = require("../dao/indexDao");
 
+// 학생 테이블 조회
+exports.readStudents = async function(req, res) {
+  // 이런 식으로 쿼리 스트링으로 들어온 값을 파싱하는 방법은
+  // req 객체 안에 있는 query 라는 객체에 접급해서 객체의 비구조 할당 방법을 사용해서 뽑아내도 됨.
+  const {stduentName} = req.query;
+
+  // 패스베리어블 버전
+  // const {studentIdx} = req.params;
+
+  // console.log(studentIdx);
+  console.log(stduentName);
+
+  try {
+    const connection = await pool.getConnection(async (conn) => conn);
+    try {
+      const [rows] = await indexDao.selectStudents(connection, stduentName);
+
+      return res.send({
+        result: rows,
+        isSuccess: true,
+        code: 200, // 요청 실패시 400번대 코드, 요청 성공시 200번대 코드
+        message: "요청 성공",
+      });
+    } catch (err) {
+      logger.error(`readStudents Query error\n: ${JSON.stringify(err)}`);
+      return false;
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    logger.error(`example DB Connection error\n: ${JSON.stringify(err)}`);
+    return false;
+  }
+}
+
 // 예시 코드
 exports.example = async function (req, res) {
   try {

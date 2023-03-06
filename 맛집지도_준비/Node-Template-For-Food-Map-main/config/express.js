@@ -22,8 +22,13 @@ module.exports = function () {
 
   // app.use(express.static(process.cwd() + '/public'));
 
-  // 직접 구현해야 하는 모듈
+  // 직접 구현해야 하는 모듈 : 라우드부분 : 실제로 해야하는 부분
   require("../src/routes/indexRoute")(app);
 
   return app;
 };
+
+/*
+src 가 우리가 실제로 코드를 쓰는 부분임.app
+routes, dao(data access object), controller 부분이 사용할 부분임
+*/

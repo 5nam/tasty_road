@@ -13,5 +13,7 @@ module.exports = function (app) {
   app.get("/dummy", function (req, res) { // req : 요청하는 객체, res : 응답하는 객체
     res.send("get dummy 요청 성공");
   })
+  
+  같은 파일안에 모든 것을 쓸 수 있지만, 콜백 함수 부분을 controller 에 분리하는 것도 좋음
   */
 };

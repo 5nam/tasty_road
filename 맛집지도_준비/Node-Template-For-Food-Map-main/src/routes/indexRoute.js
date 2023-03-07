@@ -20,6 +20,8 @@ module.exports = function (app) {
   // 학생 업데이트
   app.patch("/students/:studentIdx", index.updateStudent);
 
+  // 학생 삭제
+  app.delete("/students/:studentIdx", index.deleteStudent);
   // 예시
   /*
   app.get("/dummy", function (req, res) { // req : 요청하는 객체, res : 응답하는 객체

@@ -52,7 +52,8 @@ exports.insertStudents = async function (connection, stduentName, major, birth, 
 };
 
 exports.isValidStudentIdx = async function(connection, studentIdx) {
-  const Query = `select * from students where studentIdx = ?;`;
+  // 데이터를 실제로 삭제하지 않고, status 를 D 로 바꾸기 때문에, status 값도 같이 체크해줘야 함
+  const Query = `select * from students where studentIdx = ? and status = 'A';`;
   const Params = [studentIdx];
 
   const rows = await connection.query(Query, Params);
@@ -63,6 +64,16 @@ exports.isValidStudentIdx = async function(connection, studentIdx) {
 exports.updateStudents = async function(connection, studentIdx, stduentName, major, birth, address) {
   const Query = `update Students set studentName = ifnull(?, studentName), major = ifnull(?, major), birth = ifnull(?, birth), address = ifnull(?, address) where studentIdx = ?;`;
   const Params = [stduentName, major, birth, address, studentIdx];
+
+  const rows = await connection.query(Query, Params);
+
+  return rows;
+}
+
+// DB 는 데이터를 절대 그냥 삭제하지 않음. 그냥 상태값을 바꾸는 식으로 삭제하는 것!
+exports.deleteStudents = async function(connection, studentIdx) {
+  const Query = `update Students set status = "D" where studentIdx = ?;`;
+  const Params = [studentIdx];
 
   const rows = await connection.query(Query, Params);
 

@@ -38,7 +38,7 @@ exports.readStudents = async function(req, res) {
     logger.error(`readStudents DB Connection error\n: ${JSON.stringify(err)}`);
     return false;
   }
-}
+};
 
 // 학생 생성
 // 이 경우에는 DB 에 데이터를 생성해야 하므로, 바디의 패킷을 통해 데이터를 받아올 수 있음
@@ -89,7 +89,7 @@ exports.createStudent = async function(req, res) {
     logger.error(`insertStudents DB Connection error\n: ${JSON.stringify(err)}`);
     return false;
   }
-}
+};
 
 /*
  서버는 클라이언트 요청으로 들어오는 값들을 모두 검증을 하고 데이터 베이스에 넘겨야 함.
@@ -167,7 +167,42 @@ exports.updateStudent = async function (req, res) {
     logger.error(`updateStudents DB Connection error\n: ${JSON.stringify(err)}`);
     return false;
   }
-}
+};
+
+exports.deleteStudent = async function(req, res) {
+  const {studentIdx} = req.params;
+  try {
+    const connection = await pool.getConnection(async (conn) => conn);
+    try {
+      // studentIdx 가 존재하는, 올바른 인덱스인지
+      const isValidStudentIdx = await indexDao.isValidStudentIdx(connection, studentIdx);
+      if(isValidStudentIdx) {
+        return res.send({
+          isSuccess: false,
+          code: 400, // 요청 실패시 400번대 코드, 요청 성공시 200번대 코드
+          message: "유효한 학생 인덱스가 아닙니다.",
+        });
+      }
+
+      const [rows] = await indexDao.deleteStudents(connection, studentIdx);
+
+      return res.send({
+        result: rows,
+        isSuccess: true,
+        code: 200, // 요청 실패시 400번대 코드, 요청 성공시 200번대 코드
+        message: "학생 삭제 성공",
+      });
+    } catch (err) {
+      logger.error(`deleteStudents Query error\n: ${JSON.stringify(err)}`);
+      return false;
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    logger.error(`deleteStudents DB Connection error\n: ${JSON.stringify(err)}`);
+    return false;
+  }
+};
 
 // 예시 코드
 exports.example = async function (req, res) {

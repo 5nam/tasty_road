@@ -1,3 +1,4 @@
+const { add } = require("winston");
 const { pool } = require("../../config/database");
 
 exports.exampleDao = async function (connection) {
@@ -30,6 +31,17 @@ exports.selectStudents = async function (connection, studentName) {
 
 
   const rows = await connection.query(Query, Params);
+
+  return rows;
+};
+
+exports.insertStudents = async function (connection, stduentName, major, birth, address) {
+  // 패스베리어블 버전
+  const insertQuery = `insert into Students(studentName, major, birth, address) values (?,?,?,?);`;
+
+  const Params = [studentName, major, birth, address];
+
+  const rows = await connection.query(insertQuery, Params);
 
   return rows;
 };

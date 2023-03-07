@@ -13,6 +13,9 @@ module.exports = function (app) {
 
   // 학생 테이블 조회 : 패스베리어블
   // app.get("/students/:studentIdx", index.readStudents);
+
+  // 학생 생성
+  app.post("/students", index.createStudent);
   
 
   // 예시

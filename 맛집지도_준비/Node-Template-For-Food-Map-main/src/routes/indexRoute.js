@@ -17,6 +17,8 @@ module.exports = function (app) {
   // 학생 생성
   app.post("/students", index.createStudent);
   
+  // 학생 업데이트
+  app.patch("/students/:studentIdx", index.updateStudent);
 
   // 예시
   /*

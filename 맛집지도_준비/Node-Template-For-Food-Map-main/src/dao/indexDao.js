@@ -43,5 +43,28 @@ exports.insertStudents = async function (connection, stduentName, major, birth, 
 
   const rows = await connection.query(insertQuery, Params);
 
+  // 길이가 1이상이어야 검색된 학생이 있다는 것이므로!
+  if(rows < 1) {
+    return false;
+  }
+
   return rows;
 };
+
+exports.isValidStudentIdx = async function(connection, studentIdx) {
+  const Query = `select * from students where studentIdx = ?;`;
+  const Params = [studentIdx];
+
+  const rows = await connection.query(Query, Params);
+
+  return rows;
+}
+
+exports.updateStudents = async function(connection, studentIdx, stduentName, major, birth, address) {
+  const Query = `update Students set studentName = ifnull(?, studentName), major = ifnull(?, major), birth = ifnull(?, birth), address = ifnull(?, address) where studentIdx = ?;`;
+  const Params = [stduentName, major, birth, address, studentIdx];
+
+  const rows = await connection.query(Query, Params);
+
+  return rows;
+}

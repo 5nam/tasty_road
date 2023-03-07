@@ -97,6 +97,78 @@ exports.createStudent = async function(req, res) {
  우리가 바라던 값만 들어오도록 해야 함.
 */
 
+// 학생 업데이트
+exports.updateStudent = async function (req, res) {
+  // 수정하고 싶은 값이 전달되는 경우에만, 업데이트를 전행하면됨
+  const {stduentName, major, birth, address} = req.body;
+  const {studentIdx} = rq.params;
+  
+  // 값이 전달되고, 전달된 상태에서 타입까지 일치해야하는 것
+  if(stduentName && typeof stduentName !== "string") {
+    return res.send({
+      isSuccess: false,
+      code: 400, // 요청 실패시 400번대 코드
+      message: "값을 정확히 입력해주세요.",
+    })
+  }
+  if(major && typeof major !== "string") {
+    return res.send({
+      isSuccess: false,
+      code: 400, // 요청 실패시 400번대 코드
+      message: "값을 정확히 입력해주세요.",
+    })
+  }
+  if(birth && typeof birth !== "string") {
+    return res.send({
+      isSuccess: false,
+      code: 400, // 요청 실패시 400번대 코드
+      message: "값을 정확히 입력해주세요.",
+    })
+  }
+  // birth : YYYY-MM-DD 형식 검사
+  var regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
+
+  if(birth && !regex.test(birth)) {
+    return res.send({
+      isSuccess: false,
+      code: 400, // 요청 실패 시 400번대 코드
+      message: "날짜 형식을 확인해주세요.",
+    })
+  }
+
+  try {
+    const connection = await pool.getConnection(async (conn) => conn);
+    try {
+      // studentIdx 가 존재하는, 올바른 인덱스인지
+      const isValidStudentIdx = await indexDao.isValidStudentIdx(connection, studentIdx);
+      if(isValidStudentIdx) {
+        return res.send({
+          isSuccess: false,
+          code: 400, // 요청 실패시 400번대 코드, 요청 성공시 200번대 코드
+          message: "유효한 학생 인덱스가 아닙니다.",
+        });
+      }
+
+      const [rows] = await indexDao.updateStudents(connection, studentIdx, stduentName, major, birth, address);
+
+      return res.send({
+        result: rows,
+        isSuccess: true,
+        code: 200, // 요청 실패시 400번대 코드, 요청 성공시 200번대 코드
+        message: "학생 수정 성공",
+      });
+    } catch (err) {
+      logger.error(`updateStudents Query error\n: ${JSON.stringify(err)}`);
+      return false;
+    } finally {
+      connection.release();
+    }
+  } catch (err) {
+    logger.error(`updateStudents DB Connection error\n: ${JSON.stringify(err)}`);
+    return false;
+  }
+}
+
 // 예시 코드
 exports.example = async function (req, res) {
   try {
